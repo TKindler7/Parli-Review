@@ -7,6 +7,7 @@ A private, browser-local review room for two-team parliamentary debate. Record o
 ## What works
 
 - Microphone recording with pause/resume, input meter, elapsed time, interruption warnings and five-second local recovery chunks.
+- A built-in **Microphone & AI check** in AI connection: record a 15-second clip, listen locally, then opt into actual transcription and feedback. The test clip and results disappear when the panel closes.
 - MP3, M4A, WAV and WebM uploads, browser codec validation, explicit speech ordering and role assignment. Current limit: 50 MB per file and 120 minutes per round.
 - Five-minute, 16 kHz mono WAV transcription requests. Completed chunks persist and are reused after interrupted processing. Speaker labels are local to each chunk; users confirm speech roles.
 - Editable timestamped transcript with original text retained. Manual speech transcript entry is also supported.
@@ -61,3 +62,16 @@ Provider endpoints: OpenAI `/v1/audio/transcriptions` with `gpt-4o-transcribe-di
 ## Verification and scope
 
 See `TESTING.md` for checks actually completed and limits. Real paid transcription and generated review quality require a funded key and consented recordings; demo content is never used as proof of model accuracy. A coach-reviewed 50-round pilot, cloud account isolation, server background jobs, automatic speech-boundary recognition and resumable server uploads remain beyond this browser-local release. The original product requirements are preserved in `PRD.md`.
+
+## Check your microphone and AI connection
+
+1. Open **AI connection** and enter your own funded OpenAI API key. It stays only in tab memory.
+2. In **Microphone & AI check**, choose **Record 15-second test**, allow your browser's microphone prompt, and read the example aloud. Stop early if desired, then play the recording to check clarity.
+3. Check the notice authorizing OpenAI processing and API charges, then choose **Run live AI check**. The app shows the actual transcript and generated feedback. Judging remains off for this short clip.
+4. Close the panel to discard test audio and results. Start a round to record and review a full debate.
+
+The microphone check is local and free. The live AI check makes billable requests to OpenAI; a ChatGPT subscription does not supply API credit. No requests are retried automatically. Cancelling or closing stops local work, but a provider request already received may still be billed. Retrying after successful transcription reuses the transcript. Changing the key resets both AI service checks.
+
+## Repository build
+
+The verify-and-build workflow runs the tests, strict typecheck, and portable build on main. It saves the generated portfolio files on a separate branch named after the source commit. The main branch remains source-only. Generated builds can be copied into the portfolio after the checks pass.

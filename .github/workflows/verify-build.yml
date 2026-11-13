@@ -1,0 +1,38 @@
+name: Verify and build Parli Review
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: parli-review-build
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run typecheck
+      - run: npm run build:portfolio
+      - name: Preserve verified portfolio build
+        env:
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          set -eu
+          build_branch="portfolio-build-$SOURCE_SHA"
+          if git ls-remote --exit-code --heads origin "$build_branch" >/dev/null 2>&1; then
+            echo "A verified build branch already exists for this source commit."
+            exit 0
+          fi
+          git switch -c "$build_branch"
+          git add -f portfolio-dist
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m "Build portfolio edition from $SOURCE_SHA"
+          git push origin "HEAD:refs/heads/$build_branch"

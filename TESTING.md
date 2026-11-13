@@ -27,3 +27,12 @@ The sample report is written fixture content, clearly identified in the app and 
 - Source: https://github.com/TKindler7/Parli-Review
 - Portfolio: https://tkindler7.github.io/Teddy-Kindler/
 - Sites project initialization succeeded, but its required Git upload could not resolve the remote host from this execution environment. No Sites deployment is claimed. The working portfolio release uses GitHub Pages; the repository also includes the Vinext server build for a future Sites deployment.
+
+## Microphone and AI setup update
+
+- Twenty-six automated tests passed locally: eleven original review safeguards, nine recorder lifecycle checks, and six AI adapter/client checks.
+- Recorder checks simulate browser devices and cover pause/resume timing, recovery chunks, pending permission cancellation, permission denial, setup failure cleanup, automatic stop, disconnection, active cancellation, errors, and final-chunk ordering.
+- AI integration checks use simulated provider responses through the same adapters as the live app. They cover transcription followed by validated feedback, multipart parameters, invalid timestamps, silence, file rejection, cancellation, billing/key/permissions failures, and network errors.
+- The updated setup panel offers a local 15-second recording/playback check followed by an explicitly authorized paid transcription-and-feedback check. There is no canned success state.
+- The computer disconnected after local tests and builds, before publication. GitHub runs fresh checks and produces the final deployable build.
+- Real microphone quality and paid provider processing still require a user's recording and funded key. The automated tests do not claim either was verified.
